@@ -33,26 +33,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getRepoList() {
-        new MyAsyncTask().execute("octoman");
+        new MyAsyncTask().execute("jackson15j");
     }
 
-    private class MyAsyncTask extends AsyncTask<String, Void, List<Repo>> {
-        protected List<Repo> doInBackground(String... strings) {
+    private class MyAsyncTask extends AsyncTask<String, Void, List<GithubUsersReposModel>> {
+        protected List<GithubUsersReposModel> doInBackground(String... strings) {
             GithubClient client = GithubServiceGenerator.createService(GithubClient.class);
-            Call<List<Repo>> call = client.listRepos(strings[0]);
+            Call<List<GithubUsersReposModel>> call = client.listRepos(strings[0]);
             try {
-                List<Repo> repos = call.execute().body();
-                for (Repo repo : repos) {
-                    System.out.println("repo.full_name: "+repo.full_name);
+                List<GithubUsersReposModel> repos = call.execute().body();
+                for (GithubUsersReposModel repo : repos) {
+                    System.out.println("repo.full_name: "+repo.getFullName());
                 }
                 return repos;
             } catch (IOException e) {
-                List<Repo> repos = null;
+                List<GithubUsersReposModel> repos = null;
                 return repos;
             }
         }
 
-        protected void onPostExecute(List<Repo> result) {
+        protected void onPostExecute(List<GithubUsersReposModel> result) {
             TextView repoText2 = (TextView) findViewById(R.id.repoText2);
             repoText2.setText(result.toString());
             System.out.println("end of onPostExecute."+result);
