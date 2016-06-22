@@ -51,8 +51,14 @@ public class MainActivity extends AppCompatActivity {
         /* Does network call in background thread. */
         protected List<GithubUsersReposModel> doInBackground(String... strings) {
             GithubClient client = GithubServiceGenerator.createService(GithubClient.class);
+            // lets temporarily add in a getUser API call here, before refactoring
+            // to allow multiple calls to be made via an AsyncTask broker.
+            // TODO: refactor so I can do different API calls.
+            Call<GithubUser> githubUserCall = client.getUser(strings[0]);
             Call<List<GithubUsersReposModel>> call = client.listRepos(strings[0]);
             try {
+                GithubUser githubUser = githubUserCall.execute().body();
+                System.out.println("Name: "+githubUser.getName()+", Blog: "+githubUser.getBlog());
                 List<GithubUsersReposModel> repos = call.execute().body();
                 for (GithubUsersReposModel repo : repos) {
                     System.out.println("repo.full_name: "+repo.getFullName());
