@@ -28,33 +28,6 @@ public class MainActivity extends AppCompatActivity {
         TextView someText = (TextView) findViewById(R.id.myString);
         someText.setText("jam");
 
-        // TODO: Crap => delete
-        Time time = new Time();
-        EditText editTextTime = (EditText) findViewById(R.id.editTextTime);
-        editTextTime.setText(time.toString());
-
-        // TODO: Crap => delete
-        /* The docs: http://square.github.io/retrofit/, don't show that you
-        need to add the ConverterFactory into the call below to make things
-        work in the 2.0 API.
-
-        TODO: Figure out how to get the actual JSON out now instead of the
-        callback object when I do `repos.toString()`.
-        */
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.github.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        GithubClient service = retrofit.create(GithubClient.class);
-        Call<List<Repo>> repos1 = service.listRepos("octocat");
-        try {
-            wait(2);
-            repos1.execute();
-            wait(2);
-        } catch (Exception e) {};
-        TextView repoText = (TextView) findViewById(R.id.repoText);
-        repoText.setText(repos1.toString());
-
         // Calling my stuff by AsyncTask
         getRepoList();
     }
