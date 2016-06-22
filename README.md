@@ -25,6 +25,11 @@ Fitbit
 
 * https://dev.fitbit.com/docs/basics/
 
+Github
+------
+
+* https://developer.github.com/v3/
+
 Android Studio
 --------------
 
@@ -83,6 +88,12 @@ Threading
   queueing.
 * http://square.github.io/otto/ - Event Bus that can be used with
   AsyncTask.
+
+Images
+------
+
+* http://square.github.io/picasso/ - Display an image from a url string
+  in one-line. Nice!
 
 Android
 -------

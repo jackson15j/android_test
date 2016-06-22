@@ -1,24 +1,21 @@
 package com.example.craig.test;
 
-import android.app.Dialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.format.Time;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
 
 public class MainActivity extends AppCompatActivity {
 
+    String avatar_url;
     TextView repoText2;
 
     @Override
@@ -59,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
             try {
                 GithubUser githubUser = githubUserCall.execute().body();
                 System.out.println("Name: "+githubUser.getName()+", Blog: "+githubUser.getBlog());
+                avatar_url = githubUser.getAvatarUrl();
+                System.out.println("Saving image url: "+avatar_url+", "+githubUser.getAvatarUrl());
                 List<GithubUsersReposModel> repos = call.execute().body();
                 for (GithubUsersReposModel repo : repos) {
                     System.out.println("repo.full_name: "+repo.getFullName());
@@ -72,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
 
         /* Does UI update with result from `doInBackground()`. */
         protected void onPostExecute(List<GithubUsersReposModel> result) {
+            // lets pull in the github avatar with http://square.github.io/picasso/.
+            System.out.println("Attempting to load image from: "+avatar_url);
+            ImageView githubPhoto = (ImageView) findViewById(R.id.githubPhoto);
+            Picasso.with(getApplicationContext()).load(avatar_url).into(githubPhoto);
+
             TextView repoText2 = (TextView) findViewById(R.id.repoText2);
             repoText2.setText(result.toString());
             System.out.println("end of onPostExecute."+result);
