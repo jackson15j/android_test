@@ -9,21 +9,21 @@ public class GithubUser {
 
     private String login;
     private Integer id;
-    private String avatarUrl;
-    private String gravatarId;
+    private String avatar_url;
+    private String gravatar_id;
     private String url;
-    private String htmlUrl;
-    private String followersUrl;
-    private String followingUrl;
-    private String gistsUrl;
-    private String starredUrl;
-    private String subscriptionsUrl;
-    private String organizationsUrl;
-    private String reposUrl;
-    private String eventsUrl;
-    private String receivedEventsUrl;
+    private String html_url;
+    private String followers_url;
+    private String following_url;
+    private String gists_url;
+    private String starred_url;
+    private String subscriptions_url;
+    private String organizations_url;
+    private String repos_url;
+    private String events_url;
+    private String received_events_url;
     private String type;
-    private Boolean siteAdmin;
+    private Boolean site_admin;
     private String name;
     private String company;
     private String blog;
@@ -31,12 +31,12 @@ public class GithubUser {
     private Object email;
     private Object hireable;
     private Object bio;
-    private Integer publicRepos;
-    private Integer publicGists;
+    private Integer public_repos;
+    private Integer public_gists;
     private Integer followers;
     private Integer following;
-    private String createdAt;
-    private String updatedAt;
+    private String created_at;
+    private String updated_at;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -78,37 +78,37 @@ public class GithubUser {
     /**
      *
      * @return
-     * The avatarUrl
+     * The avatar_url
      */
     public String getAvatarUrl() {
-        return avatarUrl;
+        return avatar_url;
     }
 
     /**
      *
-     * @param avatarUrl
+     * @param avatar_url
      * The avatar_url
      */
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setAvatarUrl(String avatar_url) {
+        this.avatar_url = avatar_url;
     }
 
     /**
      *
      * @return
-     * The gravatarId
+     * The gravatar_id
      */
     public String getGravatarId() {
-        return gravatarId;
+        return gravatar_id;
     }
 
     /**
      *
-     * @param gravatarId
+     * @param gravatar_id
      * The gravatar_id
      */
-    public void setGravatarId(String gravatarId) {
-        this.gravatarId = gravatarId;
+    public void setGravatarId(String gravatar_id) {
+        this.gravatar_id = gravatar_id;
     }
 
     /**
@@ -132,181 +132,181 @@ public class GithubUser {
     /**
      *
      * @return
-     * The htmlUrl
-     */
-    public String getHtmlUrl() {
-        return htmlUrl;
-    }
-
-    /**
-     *
-     * @param htmlUrl
      * The html_url
      */
-    public void setHtmlUrl(String htmlUrl) {
-        this.htmlUrl = htmlUrl;
+    public String getHtmlUrl() {
+        return html_url;
+    }
+
+    /**
+     *
+     * @param html_url
+     * The html_url
+     */
+    public void setHtmlUrl(String html_url) {
+        this.html_url = html_url;
     }
 
     /**
      *
      * @return
-     * The followersUrl
-     */
-    public String getFollowersUrl() {
-        return followersUrl;
-    }
-
-    /**
-     *
-     * @param followersUrl
      * The followers_url
      */
-    public void setFollowersUrl(String followersUrl) {
-        this.followersUrl = followersUrl;
+    public String getFollowersUrl() {
+        return followers_url;
+    }
+
+    /**
+     *
+     * @param followers_url
+     * The followers_url
+     */
+    public void setFollowersUrl(String followers_url) {
+        this.followers_url = followers_url;
     }
 
     /**
      *
      * @return
-     * The followingUrl
-     */
-    public String getFollowingUrl() {
-        return followingUrl;
-    }
-
-    /**
-     *
-     * @param followingUrl
      * The following_url
      */
-    public void setFollowingUrl(String followingUrl) {
-        this.followingUrl = followingUrl;
+    public String getFollowingUrl() {
+        return following_url;
+    }
+
+    /**
+     *
+     * @param following_url
+     * The following_url
+     */
+    public void setFollowingUrl(String following_url) {
+        this.following_url = following_url;
     }
 
     /**
      *
      * @return
-     * The gistsUrl
-     */
-    public String getGistsUrl() {
-        return gistsUrl;
-    }
-
-    /**
-     *
-     * @param gistsUrl
      * The gists_url
      */
-    public void setGistsUrl(String gistsUrl) {
-        this.gistsUrl = gistsUrl;
+    public String getGistsUrl() {
+        return gists_url;
+    }
+
+    /**
+     *
+     * @param gists_url
+     * The gists_url
+     */
+    public void setGistsUrl(String gists_url) {
+        this.gists_url = gists_url;
     }
 
     /**
      *
      * @return
-     * The starredUrl
-     */
-    public String getStarredUrl() {
-        return starredUrl;
-    }
-
-    /**
-     *
-     * @param starredUrl
      * The starred_url
      */
-    public void setStarredUrl(String starredUrl) {
-        this.starredUrl = starredUrl;
+    public String getStarredUrl() {
+        return starred_url;
+    }
+
+    /**
+     *
+     * @param starred_url
+     * The starred_url
+     */
+    public void setStarredUrl(String starred_url) {
+        this.starred_url = starred_url;
     }
 
     /**
      *
      * @return
-     * The subscriptionsUrl
-     */
-    public String getSubscriptionsUrl() {
-        return subscriptionsUrl;
-    }
-
-    /**
-     *
-     * @param subscriptionsUrl
      * The subscriptions_url
      */
-    public void setSubscriptionsUrl(String subscriptionsUrl) {
-        this.subscriptionsUrl = subscriptionsUrl;
+    public String getSubscriptionsUrl() {
+        return subscriptions_url;
+    }
+
+    /**
+     *
+     * @param subscriptions_url
+     * The subscriptions_url
+     */
+    public void setSubscriptionsUrl(String subscriptions_url) {
+        this.subscriptions_url = subscriptions_url;
     }
 
     /**
      *
      * @return
-     * The organizationsUrl
-     */
-    public String getOrganizationsUrl() {
-        return organizationsUrl;
-    }
-
-    /**
-     *
-     * @param organizationsUrl
      * The organizations_url
      */
-    public void setOrganizationsUrl(String organizationsUrl) {
-        this.organizationsUrl = organizationsUrl;
+    public String getOrganizationsUrl() {
+        return organizations_url;
+    }
+
+    /**
+     *
+     * @param organizations_url
+     * The organizations_url
+     */
+    public void setOrganizationsUrl(String organizations_url) {
+        this.organizations_url = organizations_url;
     }
 
     /**
      *
      * @return
-     * The reposUrl
-     */
-    public String getReposUrl() {
-        return reposUrl;
-    }
-
-    /**
-     *
-     * @param reposUrl
      * The repos_url
      */
-    public void setReposUrl(String reposUrl) {
-        this.reposUrl = reposUrl;
+    public String getReposUrl() {
+        return repos_url;
+    }
+
+    /**
+     *
+     * @param repos_url
+     * The repos_url
+     */
+    public void setReposUrl(String repos_url) {
+        this.repos_url = repos_url;
     }
 
     /**
      *
      * @return
-     * The eventsUrl
-     */
-    public String getEventsUrl() {
-        return eventsUrl;
-    }
-
-    /**
-     *
-     * @param eventsUrl
      * The events_url
      */
-    public void setEventsUrl(String eventsUrl) {
-        this.eventsUrl = eventsUrl;
+    public String getEventsUrl() {
+        return events_url;
+    }
+
+    /**
+     *
+     * @param events_url
+     * The events_url
+     */
+    public void setEventsUrl(String events_url) {
+        this.events_url = events_url;
     }
 
     /**
      *
      * @return
-     * The receivedEventsUrl
+     * The received_events_url
      */
     public String getReceivedEventsUrl() {
-        return receivedEventsUrl;
+        return received_events_url;
     }
 
     /**
      *
-     * @param receivedEventsUrl
+     * @param received_events_url
      * The received_events_url
      */
-    public void setReceivedEventsUrl(String receivedEventsUrl) {
-        this.receivedEventsUrl = receivedEventsUrl;
+    public void setReceivedEventsUrl(String received_events_url) {
+        this.received_events_url = received_events_url;
     }
 
     /**
@@ -330,19 +330,19 @@ public class GithubUser {
     /**
      *
      * @return
-     * The siteAdmin
+     * The site_admin
      */
     public Boolean getSiteAdmin() {
-        return siteAdmin;
+        return site_admin;
     }
 
     /**
      *
-     * @param siteAdmin
+     * @param site_admin
      * The site_admin
      */
-    public void setSiteAdmin(Boolean siteAdmin) {
-        this.siteAdmin = siteAdmin;
+    public void setSiteAdmin(Boolean site_admin) {
+        this.site_admin = site_admin;
     }
 
     /**
@@ -474,37 +474,37 @@ public class GithubUser {
     /**
      *
      * @return
-     * The publicRepos
+     * The public_repos
      */
     public Integer getPublicRepos() {
-        return publicRepos;
+        return public_repos;
     }
 
     /**
      *
-     * @param publicRepos
+     * @param public_repos
      * The public_repos
      */
-    public void setPublicRepos(Integer publicRepos) {
-        this.publicRepos = publicRepos;
+    public void setPublicRepos(Integer public_repos) {
+        this.public_repos = public_repos;
     }
 
     /**
      *
      * @return
-     * The publicGists
+     * The public_gists
      */
     public Integer getPublicGists() {
-        return publicGists;
+        return public_gists;
     }
 
     /**
      *
-     * @param publicGists
+     * @param public_gists
      * The public_gists
      */
-    public void setPublicGists(Integer publicGists) {
-        this.publicGists = publicGists;
+    public void setPublicGists(Integer public_gists) {
+        this.public_gists = public_gists;
     }
 
     /**
@@ -546,37 +546,37 @@ public class GithubUser {
     /**
      *
      * @return
-     * The createdAt
+     * The created_at
      */
     public String getCreatedAt() {
-        return createdAt;
+        return created_at;
     }
 
     /**
      *
-     * @param createdAt
+     * @param created_at
      * The created_at
      */
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(String created_at) {
+        this.created_at = created_at;
     }
 
     /**
      *
      * @return
-     * The updatedAt
+     * The updated_at
      */
     public String getUpdatedAt() {
-        return updatedAt;
+        return updated_at;
     }
 
     /**
      *
-     * @param updatedAt
+     * @param updated_at
      * The updated_at
      */
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdatedAt(String updated_at) {
+        this.updated_at = updated_at;
     }
 
     public Map<String, Object> getAdditionalProperties() {
