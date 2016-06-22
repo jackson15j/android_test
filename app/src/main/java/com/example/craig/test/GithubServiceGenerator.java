@@ -5,7 +5,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by craig on 21/06/16.
+ * A Github Service instance that you can make API calls with.
+ *
  * https://futurestud.io/blog/retrofit-getting-started-and-android-client.
  */
 public class GithubServiceGenerator {

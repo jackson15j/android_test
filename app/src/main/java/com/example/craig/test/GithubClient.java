@@ -8,9 +8,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 /**
- * Created by craig on 21/06/16.
+ * A Github Client which has the API for calls made on top of
+ * a GithubServiceGenerator instance.
  */
-
 public interface GithubClient
 {
     @GET("/users/{user}/repos")

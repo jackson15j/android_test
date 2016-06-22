@@ -6,6 +6,7 @@ package com.example.craig.test;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/* Generated from API call: https://api.github.com/users/{user}/repos */
 //@Generated("org.jsonschema2pojo")
 public class GithubUsersReposModel {
 
