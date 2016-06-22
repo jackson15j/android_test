@@ -55,14 +55,16 @@ for accessing API's.
 * https://square.github.io/okhttp/ 
   [Github](https://github.com/square/okhttp)- Version 3 has lots of 
   changes but is now mainstream.
-* http://square.github.io/retrofit/ - Think python's `requests`
-  library. Version 2 has lots of changes but is now mainstream, but
-  poorly documented.
+* http://square.github.io/retrofit/
+  [Github](https://github.com/square/retrofit) - Think python's
+  `requests` library. Version 2 has lots of changes but is now
+  mainstream, but poorly documented.
 * http://square.github.io/retrofit/2.x/retrofit/
 * https://futurestud.io/blog/retrofit-getting-started-and-android-client
 * https://realm.io/news/droidcon-jake-wharton-simple-http-retrofit-2/
 * https://github.com/codepath/android_guides/wiki/Consuming-APIs-with-Retrofit
 * https://github.com/codepath/android_guides/wiki/Using-OkHttp
+* http://themakeinfo.com/2015/04/retrofit-android-tutorial/
 
 JSON
 ----
@@ -75,6 +77,12 @@ Threading
 * https://github.com/codepath/android_guides/wiki/Creating-and-Executing-Async-Tasks
 * https://developer.android.com/reference/android/os/AsyncTask.html
 * https://github.com/codepath/android_guides/wiki/Managing-Threads-and-Custom-Services#handler-and-loopers
+* http://simonvt.net/2014/04/17/asynctask-is-bad-and-you-should-feel-bad/
+  - interesting article which moves you from basics of AsyncTask, onto
+  using a bus to separate businiess logic from UI and allow message
+  queueing.
+* http://square.github.io/otto/ - Event Bus that can be used with
+  AsyncTask.
 
 Android
 -------
