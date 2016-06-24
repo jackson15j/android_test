@@ -9,14 +9,17 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {
 
+    List<String> repo_list = new ArrayList<String>();
     String avatar_url;
     TextView repoText2;
+    TextView repoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +61,11 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Name: "+githubUser.getName()+", Blog: "+githubUser.getBlog());
                 avatar_url = githubUser.getAvatarUrl();
                 System.out.println("Saving image url: "+avatar_url+", "+githubUser.getAvatarUrl());
+
                 List<GithubUsersReposModel> repos = call.execute().body();
                 for (GithubUsersReposModel repo : repos) {
                     System.out.println("repo.full_name: "+repo.getFullName());
+                    repo_list.add(repo.getFullName());
                 }
                 return repos;
             } catch (IOException e) {
@@ -78,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
             TextView repoText2 = (TextView) findViewById(R.id.repoText2);
             repoText2.setText(result.toString());
+
+            TextView repoList = (TextView) findViewById(R.id.repoList);
+            repoList.setText(repo_list.toString());
             System.out.println("end of onPostExecute."+result);
         }
     }
