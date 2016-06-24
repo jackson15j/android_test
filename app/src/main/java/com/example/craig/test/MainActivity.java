@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     String avatar_url;
     String username;
+    String GITHUB_USER = "jackson15j";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Call to update UI with hardcoded user repo list.
+        getUserContent();
         getRepoList();
     }
 
@@ -33,9 +35,8 @@ public class MainActivity extends AppCompatActivity {
      This the method that is called from the UI thread, to then spawn up a
      separate thread which the network call is made within.
      */
-    private void getRepoList() {
-        new MyAsyncTask().execute("jackson15j");
-    }
+    private void getUserContent() { new populateUserAsyncTask().execute(GITHUB_USER); }
+    private void getRepoList() { new MyAsyncTask().execute(GITHUB_USER); }
 
     /* Call to handle Network Call thread.
 
@@ -50,25 +51,16 @@ public class MainActivity extends AppCompatActivity {
         UI based. The reason for this is that this is all done in a non-UI background thread.
          */
         protected List<GithubUsersReposModel> doInBackground(String... strings) {
+            List<GithubUsersReposModel> repos = null;
             GithubClient client = GithubServiceGenerator.createService(GithubClient.class);
             // lets temporarily add in a getUser API call here, before refactoring
             // to allow multiple calls to be made via an AsyncTask broker.
             // TODO: refactor so I can do different API calls.
-            Call<GithubUser> githubUserCall = client.getUser(strings[0]);
             Call<List<GithubUsersReposModel>> call = client.listRepos(strings[0]);
             try {
-                GithubUser githubUser = githubUserCall.execute().body();
-                System.out.println("Name: "+githubUser.getName()+", Blog: "+githubUser.getBlog());
-                avatar_url = githubUser.getAvatarUrl();
-                username = githubUser.getName();
-                System.out.println("Saving image url: "+avatar_url+", "+githubUser.getAvatarUrl());
-
-                List<GithubUsersReposModel> repos = call.execute().body();
-                return repos;
-            } catch (IOException e) {
-                List<GithubUsersReposModel> repos = null;
-                return repos;
-            }
+                repos = call.execute().body();
+            } catch (IOException e) {} // TODO: deal with exception.
+            return repos;
         }
 
         /* Does UI update with result from `doInBackground()`.
@@ -78,15 +70,6 @@ public class MainActivity extends AppCompatActivity {
         potentially block the UI to the point that is visible to the user as a "laggy" UI.
          */
         protected void onPostExecute(List<GithubUsersReposModel> result) {
-            TextView nameText = (TextView) findViewById(R.id.nameText);
-            nameText.setText(username);
-
-
-            // lets pull in the github avatar with http://square.github.io/picasso/.
-            System.out.println("Attempting to load image from: "+avatar_url);
-            ImageView githubPhoto = (ImageView) findViewById(R.id.githubPhoto);
-            Picasso.with(getApplicationContext()).load(avatar_url).into(githubPhoto);
-
             TextView repoText2 = (TextView) findViewById(R.id.repoText2);
             repoText2.setText(result.toString());
 
@@ -97,6 +80,33 @@ public class MainActivity extends AppCompatActivity {
                 repoList.setText(repoList.getText() + repo.getFullName() + "\n");
             }
             System.out.println("end of onPostExecute."+result);
+        }
+    }
+
+    /* User network calls AsyncTask */
+    private class populateUserAsyncTask extends AsyncTask<String, Void, GithubUser> {
+        protected GithubUser doInBackground(String... strings) {
+            GithubUser githubUser = null;
+            GithubClient client = GithubServiceGenerator.createService(GithubClient.class);
+            Call<GithubUser> githubUserCall = client.getUser(strings[0]);
+            try {
+                githubUser = githubUserCall.execute().body();
+                avatar_url = githubUser.getAvatarUrl();
+                username = githubUser.getName();
+                System.out.println("Saving image url: "+avatar_url);
+            } catch (IOException e) {} // TODO: deal with exception.
+            return githubUser;
+        }
+
+        protected void onPostExecute(GithubUser result) {
+            TextView nameText = (TextView) findViewById(R.id.nameText);
+            nameText.setText(username);
+
+
+            // lets pull in the github avatar with http://square.github.io/picasso/.
+            System.out.println("Attempting to load image from: "+avatar_url);
+            ImageView githubPhoto = (ImageView) findViewById(R.id.githubPhoto);
+            Picasso.with(getApplicationContext()).load(avatar_url).into(githubPhoto);
         }
     }
 }
