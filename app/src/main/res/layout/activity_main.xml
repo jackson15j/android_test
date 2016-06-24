@@ -38,16 +38,10 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/repoText2"
+        android:id="@+id/repoList"
         android:layout_below="@+id/githubPhoto"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/repoList"
-        android:layout_below="@+id/repoText2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:editable="false"
+        android:inputType="none" />
 </RelativeLayout>

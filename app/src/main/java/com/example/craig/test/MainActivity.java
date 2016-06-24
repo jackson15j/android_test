@@ -77,11 +77,9 @@ public class MainActivity extends AppCompatActivity {
         potentially block the UI to the point that is visible to the user as a "laggy" UI.
          */
         protected void onPostExecute(List<GithubUsersReposModel> result) {
-            TextView repoText2 = (TextView) findViewById(R.id.repoText2);
-            repoText2.setText(result.toString());
-
             // pull out repos to a list for displaying in UI.
             TextView repoList = (TextView) findViewById(R.id.repoList);
+            repoList.setText("Repos: \n\n");
             for (GithubUsersReposModel repo : result) {
                 System.out.println("repo.full_name: "+repo.getFullName());
                 repoList.setText(repoList.getText() + repo.getFullName() + "\n");
