@@ -16,6 +16,7 @@ import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {
 
+    List<String> repo_list = new ArrayList<String>();
     String avatar_url;
     TextView repoText2;
     TextView repoList;
@@ -47,7 +48,11 @@ public class MainActivity extends AppCompatActivity {
      when the result has returned.
      */
     private class MyAsyncTask extends AsyncTask<String, Void, List<GithubUsersReposModel>> {
-        /* Does network call in background thread. */
+        /* Does network call in background thread.
+
+        This contains our network call, but it should also contain any additional work that is not
+        UI based. The reason for this is that this is all done in a non-UI background thread.
+         */
         protected List<GithubUsersReposModel> doInBackground(String... strings) {
             GithubClient client = GithubServiceGenerator.createService(GithubClient.class);
             // lets temporarily add in a getUser API call here, before refactoring
@@ -62,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Saving image url: "+avatar_url+", "+githubUser.getAvatarUrl());
 
                 List<GithubUsersReposModel> repos = call.execute().body();
+                // pull out repos to a list for displaying in UI.
+                for (GithubUsersReposModel repo : repos) {
+                    System.out.println("repo.full_name: "+repo.getFullName());
+                    repo_list.add(repo.getFullName());
+                }
                 return repos;
             } catch (IOException e) {
                 List<GithubUsersReposModel> repos = null;
@@ -69,7 +79,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        /* Does UI update with result from `doInBackground()`. */
+        /* Does UI update with result from `doInBackground()`.
+
+        This should contain the minimal amount of work to display the reseult onto the UI. Any
+        non-UI work should be done in the `doInBackground()` stage since if done here, it will
+        potentially block the UI to the point that is visible to the user as a "laggy" UI.
+         */
         protected void onPostExecute(List<GithubUsersReposModel> result) {
             // lets pull in the github avatar with http://square.github.io/picasso/.
             System.out.println("Attempting to load image from: "+avatar_url);
@@ -79,12 +94,7 @@ public class MainActivity extends AppCompatActivity {
             TextView repoText2 = (TextView) findViewById(R.id.repoText2);
             repoText2.setText(result.toString());
 
-            // pull out repos to a list for displaying in UI.
-            List<String> repo_list = new ArrayList<String>();
-            for (GithubUsersReposModel repo : result) {
-                System.out.println("repo.full_name: "+repo.getFullName());
-                repo_list.add(repo.getFullName());
-            }
+            // Lets pull in the repo list for our github user.
             TextView repoList = (TextView) findViewById(R.id.repoList);
             repoList.setText(repo_list.toString());
             System.out.println("end of onPostExecute."+result);
