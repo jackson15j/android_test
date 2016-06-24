@@ -8,11 +8,15 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,8 +30,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Call to update UI with hardcoded user repo list.
+        getUserCompany();
         getUserContent();
         getRepoList();
+
+
     }
 
     /* Call to get RepoList.
@@ -108,5 +115,32 @@ public class MainActivity extends AppCompatActivity {
             ImageView githubPhoto = (ImageView) findViewById(R.id.githubPhoto);
             Picasso.with(getApplicationContext()).load(avatar_url).into(githubPhoto);
         }
+    }
+
+    /* Gets the Users company info.
+
+    I've grabbed the prior api calls via AsyncTask, but lets hack something together
+    using Retrofit2's async method.
+
+    Note: This (I believe) is done all in the main UI thread, so some sadness.
+     */
+    private void getUserCompany() {
+        final TextView textView = (TextView) findViewById(R.id.textView);
+        GithubClient client = GithubServiceGenerator.createService(GithubClient.class);
+        Call<GithubUser> call = client.getUser(GITHUB_USER);
+        call.enqueue(new Callback<GithubUser>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                System.out.println("response body: "+response.body());
+                GithubUser githubUser = (GithubUser) response.body();
+                System.out.println("Getting company: " + githubUser.getCompany());
+                textView.setText(githubUser.getCompany());
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                System.out.println("callback failed for call: " + call + ", " + t);
+            } // TODO: Handle failure case.
+        });
     }
 }
