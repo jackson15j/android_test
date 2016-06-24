@@ -16,17 +16,13 @@ import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<String> repo_list = new ArrayList<String>();
     String avatar_url;
-    TextView repoText2;
-    TextView repoList;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView someText = (TextView) findViewById(R.id.myString);
-        someText.setText("jam");
 
         // Call to update UI with hardcoded user repo list.
         getRepoList();
@@ -64,14 +60,10 @@ public class MainActivity extends AppCompatActivity {
                 GithubUser githubUser = githubUserCall.execute().body();
                 System.out.println("Name: "+githubUser.getName()+", Blog: "+githubUser.getBlog());
                 avatar_url = githubUser.getAvatarUrl();
+                username = githubUser.getName();
                 System.out.println("Saving image url: "+avatar_url+", "+githubUser.getAvatarUrl());
 
                 List<GithubUsersReposModel> repos = call.execute().body();
-                // pull out repos to a list for displaying in UI.
-                for (GithubUsersReposModel repo : repos) {
-                    System.out.println("repo.full_name: "+repo.getFullName());
-                    repo_list.add(repo.getFullName());
-                }
                 return repos;
             } catch (IOException e) {
                 List<GithubUsersReposModel> repos = null;
@@ -86,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
         potentially block the UI to the point that is visible to the user as a "laggy" UI.
          */
         protected void onPostExecute(List<GithubUsersReposModel> result) {
+            TextView nameText = (TextView) findViewById(R.id.nameText);
+            nameText.setText(username);
+
+
             // lets pull in the github avatar with http://square.github.io/picasso/.
             System.out.println("Attempting to load image from: "+avatar_url);
             ImageView githubPhoto = (ImageView) findViewById(R.id.githubPhoto);
@@ -94,9 +90,12 @@ public class MainActivity extends AppCompatActivity {
             TextView repoText2 = (TextView) findViewById(R.id.repoText2);
             repoText2.setText(result.toString());
 
-            // Lets pull in the repo list for our github user.
+            // pull out repos to a list for displaying in UI.
             TextView repoList = (TextView) findViewById(R.id.repoList);
-            repoList.setText(repo_list.toString());
+            for (GithubUsersReposModel repo : result) {
+                System.out.println("repo.full_name: "+repo.getFullName());
+                repoList.setText(repoList.getText() + repo.getFullName() + "\n");
+            }
             System.out.println("end of onPostExecute."+result);
         }
     }
