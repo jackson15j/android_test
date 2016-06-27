@@ -1,6 +1,13 @@
 package com.example.craig.test;
 
+import android.util.Base64;
+
+import java.io.IOException;
+
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -13,11 +20,42 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ApiServiceGenerator {
     public static <S> S createService(Class<S> serviceClass, String apiBaseUrl) {
+        return createService(serviceClass, apiBaseUrl, null, null);
+    }
+
+    /* Basic Auth version of createService().
+
+    https://futurestud.io/blog/android-basic-authentication-with-retrofit.
+    */
+    public static <S> S createService(
+            Class<S> serviceClass,
+            String apiBaseUrl,
+            String username,
+            String password) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(apiBaseUrl)
                 .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.client(httpClient.build()).build();
+
+        if (username != null && password != null) {
+            String credentials = username + ":" + password;
+            final String basic = "Basic " + Base64.encodeToString(
+                    credentials.getBytes(), Base64.NO_WRAP);
+            httpClient.addInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request original = chain.request();
+                    Request.Builder requestBuilder = original.newBuilder()
+                            .header("Authorization", basic)
+                            .header("Accept", "application/json")
+                            .method(original.method(), original.body());
+                    Request request = requestBuilder.build();
+                    return chain.proceed(request);
+                }
+            });
+        }
+        OkHttpClient client = httpClient.build();
+        Retrofit retrofit = builder.client(client).build();
         return retrofit.create(serviceClass);
     }
 }
