@@ -48,6 +48,7 @@ Oauth
 -----
 
 * http://oauth.net/code/
+* https://futurestud.io/blog/oauth-2-on-android-with-retrofit - Highly recomment!!
 * https://cloud.google.com/appengine/docs/java/oauth/
 * https://github.com/bkiers/retrofit-oauth - demo
 
@@ -65,7 +66,7 @@ for accessing API's.
   `requests` library. Version 2 has lots of changes but is now
   mainstream, but poorly documented.
 * http://square.github.io/retrofit/2.x/retrofit/
-* https://futurestud.io/blog/retrofit-getting-started-and-android-client
+* https://futurestud.io/blog/retrofit-getting-started-and-android-client - Highly recommend!!
 * https://realm.io/news/droidcon-jake-wharton-simple-http-retrofit-2/
 * https://github.com/codepath/android_guides/wiki/Consuming-APIs-with-Retrofit
 * https://github.com/codepath/android_guides/wiki/Using-OkHttp
