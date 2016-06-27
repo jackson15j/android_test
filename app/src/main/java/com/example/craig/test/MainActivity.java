@@ -1,15 +1,25 @@
 package com.example.craig.test;
 
+import android.content.Intent;
+import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,7 +41,39 @@ public class MainActivity extends AppCompatActivity {
         getUserContent();
         getRepoList();
 
+        /* Button to Oauth login to Fitbit with my credentials via the
+        Implicit Grant Flow (ie. no user action needed).
 
+        https://dev.fitbit.com/docs/oauth2/#implicit-grant-flow.
+         */
+        Button fitbitLoginButton = (Button) findViewById(R.id.fitbitLoginButton);
+        fitbitLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Read in client_id from local.properties under: app/src/main/assets/local.properties.
+                // Note: this will NOT be committed to the git repo.
+                Properties properties = new Properties();
+                try {
+                    AssetManager assetManager = getAssets();
+                    InputStream inputStream = assetManager.open("local.properties");
+                    properties.load(inputStream);
+                    System.out.println("client_id: " + properties.getProperty("client_id"));
+                } catch (IOException e) { e.printStackTrace(); } // TODO: handle exception gracefully.
+
+
+                // https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=22942C&redirect_uri=http%3A%2F%2Fexample.com%2Ffitbit_auth&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800
+                String fitbit_auth_url =
+                        "https://www.fitbit.com/oauth2/authorize?response_type=token" +
+                                "&client_id=" + properties.getProperty("client_id") +
+                                "&redirect_uri=https://github.com/jackson15j" +
+                                "&scope=activity" +
+                                "&expires_in=604800";
+                System.out.println("Fitbit Auth url: " + fitbit_auth_url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fitbit_auth_url));
+                startActivity(intent);
+            }
+        });
     }
 
     /* Call to get RepoList.

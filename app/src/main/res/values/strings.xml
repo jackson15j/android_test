@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">test</string>
     <string name="string_1">hello world</string>
+    <string name="fitbit_login_button">Fitbit Login</string>
 </resources>
