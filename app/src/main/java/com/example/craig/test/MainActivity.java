@@ -8,10 +8,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -59,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
          */
         protected List<GithubUsersReposModel> doInBackground(String... strings) {
             List<GithubUsersReposModel> repos = null;
-            GithubClient client = GithubServiceGenerator.createService(GithubClient.class);
+            GithubClient client = ApiServiceGenerator.createService(
+                    GithubClient.class,
+                    GithubClient.API_BASE_URL);
             // lets temporarily add in a getUser API call here, before refactoring
             // to allow multiple calls to be made via an AsyncTask broker.
             // TODO: refactor so I can do different API calls.
@@ -92,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
     private class populateUserAsyncTask extends AsyncTask<String, Void, GithubUser> {
         protected GithubUser doInBackground(String... strings) {
             GithubUser githubUser = null;
-            GithubClient client = GithubServiceGenerator.createService(GithubClient.class);
+            GithubClient client = ApiServiceGenerator.createService(
+                    GithubClient.class,
+                    GithubClient.API_BASE_URL);
             Call<GithubUser> githubUserCall = client.getUser(strings[0]);
             try {
                 githubUser = githubUserCall.execute().body();
@@ -124,7 +125,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void getUserCompany() {
         final TextView textView = (TextView) findViewById(R.id.textView);
-        GithubClient client = GithubServiceGenerator.createService(GithubClient.class);
+        GithubClient client = ApiServiceGenerator.createService(
+                GithubClient.class,
+                GithubClient.API_BASE_URL);
         Call<GithubUser> call = client.getUser(GITHUB_USER);
         call.enqueue(new Callback<GithubUser>() {
             @Override

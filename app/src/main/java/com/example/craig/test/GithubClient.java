@@ -9,10 +9,12 @@ import retrofit2.http.Path;
 
 /**
  * A Github Client which has the API for calls made on top of
- * a GithubServiceGenerator instance.
+ * a ApiServiceGenerator instance.
  */
 public interface GithubClient
 {
+    public static final String API_BASE_URL = "https://api.github.com";
+
     @GET("/users/{user}")
     Call<GithubUser> getUser(@Path("user") String user);
 
