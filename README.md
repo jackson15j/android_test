@@ -1,5 +1,5 @@
-Craastil's Android Test app
-===========================
+My Android Test app
+===================
 
 Just a random app that I'm using to learn both Java and Android 
 development. Main aim is to be able to do a GET/POST to a web service
@@ -12,7 +12,7 @@ Link Dump
 In no particular order, here is a link dump provided by my 
 investigations and from talks with a friendly android contractor:
 
-* http://search.maven.org - Java equivilant of Pythons PyPi.
+* http://search.maven.org - Java equivalent of Python's PyPi.
 
 Withings
 --------
@@ -36,7 +36,7 @@ Android Studio
 * Get *markdown navigator* for native editing of markdown files.
 * Get *Genymotion* if you don't want to use built in emulators.
 * If you don't see a preview on layout files, check the version drop
-  down above the preview pane. It's probably on an imcompatible version
+  down above the preview pane. It's probably on an incompatible version
   (Like android N).
 * Apparently real Android dev's still use Android Studio.
 * https://developer.android.com/training/index.html
@@ -58,10 +58,10 @@ Apparently [Square](https://square.github.io/) makes the best libraries
 for accessing API's.
 
 * https://square.github.io/okhttp/ 
-  [Github](https://github.com/square/okhttp)- Version 3 has lots of 
+  [[Github](https://github.com/square/okhttp)]- Version 3 has lots of 
   changes but is now mainstream.
 * http://square.github.io/retrofit/
-  [Github](https://github.com/square/retrofit) - Think python's
+  [[Github](https://github.com/square/retrofit)] - Think Python's
   `requests` library. Version 2 has lots of changes but is now
   mainstream, but poorly documented.
 * http://square.github.io/retrofit/2.x/retrofit/
@@ -84,7 +84,7 @@ Threading
 * https://github.com/codepath/android_guides/wiki/Managing-Threads-and-Custom-Services#handler-and-loopers
 * http://simonvt.net/2014/04/17/asynctask-is-bad-and-you-should-feel-bad/
   - interesting article which moves you from basics of AsyncTask, onto
-  using a bus to separate businiess logic from UI and allow message
+  using a bus to separate business logic from UI and allow message
   queueing.
 * http://square.github.io/otto/ - Event Bus that can be used with
   AsyncTask.
