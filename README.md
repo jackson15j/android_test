@@ -48,7 +48,7 @@ Oauth
 -----
 
 * http://oauth.net/code/
-* https://futurestud.io/blog/oauth-2-on-android-with-retrofit - Highly recomment!!
+* https://futurestud.io/blog/oauth-2-on-android-with-retrofit - Highly recommend!!
 * https://cloud.google.com/appengine/docs/java/oauth/
 * https://github.com/bkiers/retrofit-oauth - demo
 
@@ -106,6 +106,10 @@ explicitly stated in generic Java examples, such as:
   raise a network exception if you try to do network calls in the UI
   thread. To fix, you must create a new thread. Async-Tasks library is 
   one way of doing this easily.
+* Common behaviour for files to read config from (eg.
+  `local.properties`), is to place them in either:
+  `app/src/main/assets`, or: `app/src/main/res/raw`. Others have said
+  root of the project, but haven't gotten this to work for me yet.
 
 Books
 =====
