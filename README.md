@@ -118,6 +118,15 @@ explicitly stated in generic Java examples, such as:
   requires the redirect uri to have a schema which the Browser/WebView
   doesn't understand, so that it looks up an application which can
   handle it. Else we will be trapped in the Browser/WebView.
+* If you have already made an Oauth request and it has been set to:
+  `allow`, then I think there needs to be some code to handle that
+  gracefully. Currently hanging the Browser if it has been left open
+  between subsequent Oauth request attempts.
+* Might have missed it, but it looks like there is no nice method in
+  `Uri` to parse key/value pairs out of a uri with a fragment
+  (schema://host#key=value&...). If you have a uri with a query
+  (schema://host?key=value&...), then you can use:
+  `String value = Uri.getQueryParameter("key");`.
 
 Books
 =====

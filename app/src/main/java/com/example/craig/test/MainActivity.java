@@ -18,7 +18,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import retrofit2.Call;
@@ -134,9 +136,33 @@ public class MainActivity extends AppCompatActivity {
                 TextView fitbitRedirectText = (TextView) findViewById(R.id.fitbitRedirectText);
                 fitbitRedirectText.setText(
                         uri.getQueryParameter("error") + ": " + uri.getQueryParameter("error_description"));
-            } else {
+            } else if (uri.getFragment() != null && uri.getFragment().contains("access_token")) {
                 // We have authenticated and should store the redirect url / valid access_token.
+
+                // FIXME: Don't know why by Oauth Browser request will hang on the Browser if we
+                // don't kill it between runs. Only occurs once we've clicked `allow`.
                 System.out.println("Already authenticated else block uri: " + uri.toString());
+
+                /* After the simplicity of `String value = uri.getQueryParameter("key")`, it seems
+                to be an utter ballache to have to manually parse the uri, now that we have a
+                fragment (schema://host#key=value&...) returned instead of a query
+                (schema://host?key=value&...).
+
+                Haven't found a better way so lets pull out the fragment and do some string munging
+                to get the key/value pairs that we need.
+                 */
+                String fragment = uri.getFragment();
+                Map<String, String> fragment_pairs = new LinkedHashMap<String, String>();
+                String[] pairs = fragment.split("&");
+                for (String pair : pairs) {
+                    int i = pair.indexOf("=");
+                    fragment_pairs.put(pair.substring(0, i), pair.substring(i + 1));
+                }
+                System.out.println("fragment_pairs: " + fragment_pairs.toString());
+                String user_id = fragment_pairs.get("user_id");
+                String access_token = fragment_pairs.get("access_token");
+                TextView fitbitRedirectText = (TextView) findViewById(R.id.fitbitRedirectText);
+                fitbitRedirectText.setText("user_id: " + user_id + ", access_token: " + access_token);
             }
         }
     }
