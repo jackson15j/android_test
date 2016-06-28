@@ -27,16 +27,34 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    Properties properties = new Properties();
     String avatar_url;
     String username;
-    String GITHUB_USER = "jackson15j";
-    String FITBIT_REDIRECT_URI = "your://github.com/jackson15j";
     String EXPIRY_TIME = "300";  // 604800 = 1 week.
+    String FITBIT_CLIENT_ID;
+    String FITBIT_CLIENT_SECRET;
+    String FITBIT_REDIRECT_URI = "your://github.com/jackson15j";
+    String GITHUB_USER = "jackson15j";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Read in client_id from local.properties under: app/src/main/assets/local.properties.
+        // Note: this will NOT be committed to the git repo.
+        try {
+            AssetManager assetManager = getAssets();
+            InputStream inputStream = assetManager.open("local.properties");
+            properties.load(inputStream);
+            FITBIT_CLIENT_ID = properties.getProperty("client_id");
+            FITBIT_CLIENT_SECRET = properties.getProperty("client_secret");
+            System.out.println("client_id: " + FITBIT_CLIENT_ID);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } // TODO: handle exception gracefully.
+
 
         // Call to update UI with hardcoded user repo list.
         getUserCompany();
@@ -65,22 +83,10 @@ public class MainActivity extends AppCompatActivity {
         fitbitLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // Read in client_id from local.properties under: app/src/main/assets/local.properties.
-                // Note: this will NOT be committed to the git repo.
-                Properties properties = new Properties();
-                try {
-                    AssetManager assetManager = getAssets();
-                    InputStream inputStream = assetManager.open("local.properties");
-                    properties.load(inputStream);
-                    System.out.println("client_id: " + properties.getProperty("client_id"));
-                } catch (IOException e) { e.printStackTrace(); } // TODO: handle exception gracefully.
-
-
                 // https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=22942C&redirect_uri=http%3A%2F%2Fexample.com%2Ffitbit_auth&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800
                 String fitbit_auth_url =
                         "https://www.fitbit.com/oauth2/authorize?response_type=token" +
-                                "&client_id=" + properties.getProperty("client_id") +
+                                "&client_id=" + FITBIT_CLIENT_ID +
                                 "&redirect_uri=" + FITBIT_REDIRECT_URI +
                                 "&scope=activity" +
                                 "&expires_in=" + EXPIRY_TIME;
@@ -110,13 +116,27 @@ public class MainActivity extends AppCompatActivity {
             String code = uri.getQueryParameter("code");
             if (code != null) {
                 // Get access token
+                System.out.println("code: " + code);
                 TextView fitbitRedirectText = (TextView) findViewById(R.id.fitbitRedirectText);
-                fitbitRedirectText.setText(uri.getQueryParameter("code"));
+                fitbitRedirectText.setText(code);
+                FitbitClient fitbitClient = ApiServiceGenerator.createService(
+                        FitbitClient.class,
+                        FitbitClient.API_BASE_URL,
+                        FITBIT_CLIENT_ID,
+                        FITBIT_CLIENT_SECRET);
+                Call<AccessToken> call = fitbitClient.getAccessToken(code, "authorization_code");
+                try {
+                    AccessToken accessToken = call.execute().body();
+                    System.out.println("accessToken: " + accessToken.getAccessToken());
+                } catch (IOException e) { e.printStackTrace(); }
             } else if (uri.getQueryParameter("error") != null) {
                 // Show an error message here.
                 TextView fitbitRedirectText = (TextView) findViewById(R.id.fitbitRedirectText);
                 fitbitRedirectText.setText(
                         uri.getQueryParameter("error") + ": " + uri.getQueryParameter("error_description"));
+            } else {
+                // We have authenticated and should store the redirect url / valid access_token.
+                System.out.println("Already authenticated else block uri: " + uri.toString());
             }
         }
     }
