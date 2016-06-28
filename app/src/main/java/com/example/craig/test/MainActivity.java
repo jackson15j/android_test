@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     String avatar_url;
     String username;
     String GITHUB_USER = "jackson15j";
+    String FITBIT_REDIRECT_URI = "your://github.com/jackson15j";
+    String EXPIRY_TIME = "300";  // 604800 = 1 week.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,19 @@ public class MainActivity extends AppCompatActivity {
 
         /* Button to Oauth login to Fitbit with my credentials via the
         Implicit Grant Flow (ie. no user action needed).
+
+        The workflow is as follows:
+
+        * User clicks button.
+        * Webview (browser) loads to Fitbits Oauth request page where User enters Fitbit account.
+        * On successful login we are redirected to authorization page with: Access and allow/deny.
+        * Clicking allow/deny causes fitbit to send code/error appended to the redirect_uri/callback
+          specified in dev.fitbit.com for the registered application. KEY POINT, the schema must be
+          something unique to the application, so that the Browser/webView will not be able to parse
+          it, look up in the registered intent-filters, and pass it to that application (ie. not
+          http/https).
+        * The redirect_uri is passed back to our application, which calls the `onResume()` block.
+        * We either handle the deny, or continue with the oauth steps from the allow.
 
         https://dev.fitbit.com/docs/oauth2/#implicit-grant-flow.
          */
@@ -66,14 +81,44 @@ public class MainActivity extends AppCompatActivity {
                 String fitbit_auth_url =
                         "https://www.fitbit.com/oauth2/authorize?response_type=token" +
                                 "&client_id=" + properties.getProperty("client_id") +
-                                "&redirect_uri=https://github.com/jackson15j" +
+                                "&redirect_uri=" + FITBIT_REDIRECT_URI +
                                 "&scope=activity" +
-                                "&expires_in=604800";
+                                "&expires_in=" + EXPIRY_TIME;
                 System.out.println("Fitbit Auth url: " + fitbit_auth_url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fitbit_auth_url));
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /* Now that the Browser/WebView cannot handle the schema of our redirect_uri, looked up a
+        registered intent-filter that points to our application, and called back to our application,
+        we will be in this code block.
+
+        Let's now figure out if the User has clicked allow/deny and take the appropriate actions.
+         */
+        // The intent filter defined in AndroidManifest will handle the return from
+        // ACTION_VIEW intent.
+        System.out.println("In onResume!!!");
+        Uri uri = getIntent().getData();
+        if (uri != null && uri.toString().startsWith(FITBIT_REDIRECT_URI)) {
+            System.out.println("redirectUri: " + uri.toString());
+            // Use the parameter your API exposes for the code (mostly it's "code").
+            String code = uri.getQueryParameter("code");
+            if (code != null) {
+                // Get access token
+                TextView fitbitRedirectText = (TextView) findViewById(R.id.fitbitRedirectText);
+                fitbitRedirectText.setText(uri.getQueryParameter("code"));
+            } else if (uri.getQueryParameter("error") != null) {
+                // Show an error message here.
+                TextView fitbitRedirectText = (TextView) findViewById(R.id.fitbitRedirectText);
+                fitbitRedirectText.setText(
+                        uri.getQueryParameter("error") + ": " + uri.getQueryParameter("error_description"));
+            }
+        }
     }
 
     /* Call to get RepoList.

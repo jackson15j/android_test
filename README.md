@@ -110,6 +110,14 @@ explicitly stated in generic Java examples, such as:
   `local.properties`), is to place them in either:
   `app/src/main/assets`, or: `app/src/main/res/raw`. Others have said
   root of the project, but haven't gotten this to work for me yet.
+* The `intent` mechanism is Android speak for different processes and
+  how data is passed between those processes.
+* `intent-filter`'s are used to register your application to handle
+  specific scenarios. One example of where this is needed is in Oauth.
+  We need the redirect uri to come back to the application. This
+  requires the redirect uri to have a schema which the Browser/WebView
+  doesn't understand, so that it looks up an application which can
+  handle it. Else we will be trapped in the Browser/WebView.
 
 Books
 =====
