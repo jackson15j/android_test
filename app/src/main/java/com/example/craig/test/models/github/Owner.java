@@ -1,6 +1,6 @@
-//-----------------------------------com.example.craig.test.Owner.java-----------------------------------
+//-----------------------------------com.example.craig.test.models.github.Owner.java-----------------------------------
 
-package com.example.craig.test;
+package com.example.craig.test.models.github;
 
 //import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;

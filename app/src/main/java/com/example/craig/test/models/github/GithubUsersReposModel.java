@@ -1,6 +1,6 @@
-//-----------------------------------com.example.craig.test.GithubUsersReposModel.java-----------------------------------
+//-----------------------------------com.example.craig.test.models.github.GithubUsersReposModel.java-----------------------------------
 
-package com.example.craig.test;
+package com.example.craig.test.models.github;
 
 //import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;

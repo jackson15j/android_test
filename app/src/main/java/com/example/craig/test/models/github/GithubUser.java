@@ -1,4 +1,4 @@
-package com.example.craig.test;
+package com.example.craig.test.models.github;
 
 import java.util.HashMap;
 import java.util.Map;
