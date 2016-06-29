@@ -228,7 +228,8 @@ public class MainActivity extends AppCompatActivity {
             Call<List<GithubUsersReposModel>> call = client.listRepos(strings[0]);
             try {
                 repos = call.execute().body();
-            } catch (IOException e) {} // TODO: deal with exception.
+            } catch (IOException e) {
+            } // TODO: deal with exception.
             return repos;
         }
 
@@ -243,10 +244,10 @@ public class MainActivity extends AppCompatActivity {
             TextView repoList = (TextView) findViewById(R.id.repoList);
             repoList.setText("Repos: \n\n");
             for (GithubUsersReposModel repo : result) {
-                System.out.println("repo.full_name: "+repo.getFullName());
+                System.out.println("repo.full_name: " + repo.getFullName());
                 repoList.setText(repoList.getText() + repo.getFullName() + "\n");
             }
-            System.out.println("end of onPostExecute."+result);
+            System.out.println("end of onPostExecute." + result);
         }
     }
 
@@ -262,8 +263,9 @@ public class MainActivity extends AppCompatActivity {
                 githubUser = githubUserCall.execute().body();
                 avatar_url = githubUser.getAvatarUrl();
                 username = githubUser.getName();
-                System.out.println("Saving image url: "+avatar_url);
-            } catch (IOException e) {} // TODO: deal with exception.
+                System.out.println("Saving image url: " + avatar_url);
+            } catch (IOException e) {
+            } // TODO: deal with exception.
             return githubUser;
         }
 
@@ -273,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             // lets pull in the github avatar with http://square.github.io/picasso/.
-            System.out.println("Attempting to load image from: "+avatar_url);
+            System.out.println("Attempting to load image from: " + avatar_url);
             ImageView githubPhoto = (ImageView) findViewById(R.id.githubPhoto);
             Picasso.with(getApplicationContext()).load(avatar_url).into(githubPhoto);
         }

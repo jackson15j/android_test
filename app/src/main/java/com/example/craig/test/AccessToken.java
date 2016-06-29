@@ -25,7 +25,7 @@ public class AccessToken {
 
     public String getTokenType() {
         // OAuth requires uppercase Authorization HTTP header value for token type.
-        if ( ! Character.isUpperCase(tokenType.charAt(0))) {
+        if (!Character.isUpperCase(tokenType.charAt(0))) {
             tokenType = Character
                     .toString(tokenType.charAt(0))
                     .toUpperCase() + tokenType.substring(1);
