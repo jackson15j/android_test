@@ -6,6 +6,8 @@ development. Main aim is to be able to do a GET/POST to a web service
 with Oauth when required. The GET's should be displayed to the user via
 the UI.
 
+![Sample screenshot](extras/screenshot.png "Sample screenshot")
+
 Link Dump
 =========
 
