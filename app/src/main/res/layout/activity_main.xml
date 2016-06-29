@@ -66,7 +66,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Steps"
+        android:text="Fitbit Steps"
         android:id="@+id/fitbitStepsText"
         android:layout_above="@+id/fitbitLoginButton"
         android:layout_alignParentLeft="true"

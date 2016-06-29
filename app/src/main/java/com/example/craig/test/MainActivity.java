@@ -172,9 +172,9 @@ public class MainActivity extends AppCompatActivity {
                 FITBIT_ACCESS_TOKEN = new AccessToken(access_token, token_type);
 
                 TextView fitbitRedirectText = (TextView) findViewById(R.id.fitbitRedirectText);
-                fitbitRedirectText.setText(
-                        "user_id: " + FITBIT_USER_ID + ", access_token: " + access_token);
+                fitbitRedirectText.setText("Successful OAuth with Fitbit");
             }
+
             /* This is a super big bodge.
 
             onResume() is called when loading the app. Which means if I don't handle arguments
@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(FitbitActivity result) {
             final TextView fitbitStepsText = (TextView) findViewById(R.id.fitbitStepsText);
             int steps = result.getSummary().getSteps();
-            fitbitStepsText.setText("Steps: " + steps);
+            fitbitStepsText.setText("Fitbit Steps: " + steps);
             System.out.println("Fitbit Steps: " + steps);
         }
     }
