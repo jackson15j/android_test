@@ -11,13 +11,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.craig.test.models.fitbit.Activity;
+import com.example.craig.test.models.fitbit.FitbitActivity;
+import com.example.craig.test.models.fitbit.Summary;
+import com.example.craig.test.models.github.GithubUser;
+import com.example.craig.test.models.github.GithubUsersReposModel;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
     String FITBIT_CLIENT_ID;
     String FITBIT_CLIENT_SECRET;
     String FITBIT_REDIRECT_URI = "your://github.com/jackson15j";
+    String FITBIT_USER_ID;
     String GITHUB_USER = "jackson15j";
+    AccessToken FITBIT_ACCESS_TOKEN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,8 +135,8 @@ public class MainActivity extends AppCompatActivity {
                         FITBIT_CLIENT_SECRET);
                 Call<AccessToken> call = fitbitClient.getAccessToken(code, "authorization_code");
                 try {
-                    AccessToken accessToken = call.execute().body();
-                    System.out.println("accessToken: " + accessToken.getAccessToken());
+                    FITBIT_ACCESS_TOKEN = call.execute().body();
+                    System.out.println("accessToken: " + FITBIT_ACCESS_TOKEN.getAccessToken());
                 } catch (IOException e) { e.printStackTrace(); }
             } else if (uri.getQueryParameter("error") != null) {
                 // Show an error message here.
@@ -159,11 +166,27 @@ public class MainActivity extends AppCompatActivity {
                     fragment_pairs.put(pair.substring(0, i), pair.substring(i + 1));
                 }
                 System.out.println("fragment_pairs: " + fragment_pairs.toString());
-                String user_id = fragment_pairs.get("user_id");
+                FITBIT_USER_ID = fragment_pairs.get("user_id");
                 String access_token = fragment_pairs.get("access_token");
+                String token_type = fragment_pairs.get("token_type");
+                FITBIT_ACCESS_TOKEN = new AccessToken(access_token, token_type);
+
                 TextView fitbitRedirectText = (TextView) findViewById(R.id.fitbitRedirectText);
-                fitbitRedirectText.setText("user_id: " + user_id + ", access_token: " + access_token);
+                fitbitRedirectText.setText(
+                        "user_id: " + FITBIT_USER_ID + ", access_token: " + access_token);
             }
+            /* This is a super big bodge.
+
+            onResume() is called when loading the app. Which means if I don't handle arguments
+            like user_id being null, then we'll blow up if this is moved to be called outside
+            of the Fitbit OAuth code above.
+
+            Super dirty, but good enough to get it working at least.
+
+            TODO: Fix the issue where we have not authenticated & have null arguments required
+            to do authenticated API calls.
+             */
+            getFitbitStepsAsyncTask();
         }
     }
 
@@ -172,8 +195,15 @@ public class MainActivity extends AppCompatActivity {
      This the method that is called from the UI thread, to then spawn up a
      separate thread which the network call is made within.
      */
-    private void getUserContent() { new populateUserAsyncTask().execute(GITHUB_USER); }
-    private void getRepoList() { new MyAsyncTask().execute(GITHUB_USER); }
+    private void getUserContent() {
+        new populateUserAsyncTask().execute(GITHUB_USER);
+    }
+
+    private void getRepoList() {
+        new MyAsyncTask().execute(GITHUB_USER);
+    }
+
+    private void getFitbitStepsAsyncTask() { new populateFitbitActivityAsyncTask().execute(); }
 
     /* Call to handle Network Call thread.
 
@@ -265,7 +295,11 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<GithubUser>() {
             @Override
             public void onResponse(Call call, Response response) {
-                System.out.println("response body: "+response.body());
+                if (response == null) {
+                    System.out.println("What is causing a null Github response?? " + response);
+                    return;
+                }
+                System.out.println("response body: " + response.body());
                 GithubUser githubUser = (GithubUser) response.body();
                 System.out.println("Getting company: " + githubUser.getCompany());
                 textView.setText(githubUser.getCompany());
@@ -276,5 +310,36 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("callback failed for call: " + call + ", " + t);
             } // TODO: Handle failure case.
         });
+    }
+
+    private class populateFitbitActivityAsyncTask extends AsyncTask<Void, Void, FitbitActivity> {
+        protected FitbitActivity doInBackground(Void... params) {
+            System.out.println("in populateFitbitActivityAsyncTask()...");
+            // Fitbit query needs date in: yyyy-MM-dd, format
+            Date date = Calendar.getInstance().getTime();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String todays_date = dateFormat.format(date);
+
+            FitbitActivity fitbitActivity = null;
+            FitbitClient client = ApiServiceGenerator.createService(
+                    FitbitClient.class,
+                    FitbitClient.API_BASE_URL,
+                    FITBIT_ACCESS_TOKEN);
+            Call<FitbitActivity> fitbitActivityCall = client.getActivity(FITBIT_USER_ID, todays_date);
+            try {
+                fitbitActivity = fitbitActivityCall.execute().body();
+                Summary summary = fitbitActivity.getSummary();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } // TODO: deal with exception.
+            return fitbitActivity;
+        }
+
+        protected void onPostExecute(FitbitActivity result) {
+            final TextView fitbitStepsText = (TextView) findViewById(R.id.fitbitStepsText);
+            int steps = result.getSummary().getSteps();
+            fitbitStepsText.setText("Steps: " + steps);
+            System.out.println("Fitbit Steps: " + steps);
+        }
     }
 }

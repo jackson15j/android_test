@@ -24,7 +24,7 @@ public interface FitbitClient {
             @Field("code") String code,
             @Field("grant_type") String grantType);
 
-    @GET("/user/{user_id}/activites/date/{date}")
+    @GET("/1/user/{user_id}/activities/date/{date}.json")
     Call<FitbitActivity> getActivity(
             @Path("user_id") String user_id,
             @Path("date") String date);

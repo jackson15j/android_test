@@ -62,4 +62,13 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/fitbitLoginButton"
         android:layout_toEndOf="@+id/fitbitLoginButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Steps"
+        android:id="@+id/fitbitStepsText"
+        android:layout_above="@+id/fitbitLoginButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
